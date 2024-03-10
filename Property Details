@@ -1,0 +1,7 @@
+Property Details = 
+var units =count('معاملات التقييم'[رقم التقييم - QR])
+VAR unit_text=IF(units<> 0," عدد الوحدات" & units ,"لا يوجد" )
+
+
+
+return  unit_text
