@@ -1,0 +1,10 @@
+Cumulative Customers = 
+
+if(DISTINCTCOUNT('معاملات التقييم'[رقم التقييم - QR])>0,
+CALCULATE(
+    DISTINCTCOUNT('معاملات التقييم'[اسم العميل]),
+    FILTER(
+        ALL('معاملات التقييم'),
+        'معاملات التقييم'[تاريخ التكليف].[Date] <= MAX('Calender'[Date])
+    )
+))
