@@ -1,0 +1,12 @@
+Date OF New Customer = 
+CALCULATE (
+    MIN ( 'معاملات التقييم'[تاريخ التكليف] ),  -- Calculate the minimum transaction date
+    FILTER (
+        VALUES('معاملات التقييم'[اسم العميل]),  -- Use VALUES function to get distinct customer keys
+        CALCULATE (
+            COUNTROWS('معاملات التقييم'),  -- Count the number of rows for each customer
+            ALLEXCEPT('معاملات التقييم', 'معاملات التقييم'[اسم العميل])  -- Remove all filters except the customer key
+        ) > 0  -- Filter for customers with at least one transaction
+    ),
+    ALL ( Calender )  -- Remove any filters applied to the calendar table
+)
