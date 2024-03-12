@@ -1,0 +1,23 @@
+# New_Customers = 
+VAR CustomersWithNewDate =
+    CALCULATETABLE (
+        ADDCOLUMNS (
+            VALUES ( 'معاملات التقييم'[اسم العميل] ), -- Unique customer names
+            "@NewCustomerDate", [Date OF New Customer] -- Date of first transaction for each customer
+        ),
+        ALLSELECTED ( 'معاملات التقييم' ), -- Clear filters from 'معاملات التقييم' table
+        ALLSELECTED ( 'Calender' ) -- Clear filters from calendar table
+    )
+VAR CustomersWithLineage =
+    TREATAS (
+        CustomersWithNewDate,
+        'معاملات التقييم'[اسم العميل], -- Filter customer names
+        'Calender'[Date] -- Filter dates
+    )
+VAR Result =
+    CALCULATE (
+        DISTINCTCOUNT ( 'معاملات التقييم'[اسم العميل] ), -- Count distinct customer names
+        KEEPFILTERS ( CustomersWithLineage ) -- Keep filters from CustomersWithLineage table
+    )
+RETURN
+    Result
